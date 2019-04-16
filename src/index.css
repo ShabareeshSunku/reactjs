@@ -1,4 +1,5 @@
-.heading {
-    color : orangered;
-    padding : 10px
+body {
+    background-color: #F1F1F1;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color:#444;
 }
