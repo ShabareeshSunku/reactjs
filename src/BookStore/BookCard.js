@@ -10,7 +10,7 @@ export default class BookCard extends PureComponent {
         // const price = this.props.price
 
         //ES6 Syntax
-        const { title = '', subtitle = '', thumbnail = '', price = '', rating = 0, authors=[] } = this.props
+        const { title = '', subtitle = '', thumbnail = '', price = '', rating = 0, authors = [] } = this.props
 
         return (
             <div className="col-xs-12 col-sm-8 col-md-6 col-lg-4">
@@ -19,20 +19,20 @@ export default class BookCard extends PureComponent {
                         <div className="col-xs-6 col-sm-4 col-md-4 col-lg-4 card-image-container">
                             {
                                 thumbnail ? (
-                                    <img src={thumbnail} alt={title} style={{ height: '100%' }} />
+                                    <img src={thumbnail} alt={title} className="thumbnail"/>
                                 ) : <div className="placeholder">
-                                        <img src='../images/book.png' alt="book" className="default-icon" />
+                                        <span className="fa fa-book default-icon" />
                                     </div>
                             }
                         </div>
                         <div className="col-xs-6 col-sm-8 col-md-8 col-lg-8 card-text-container">
                             <h4 className="title">{title}</h4>
                             {
-                                authors.length > 0 ? <p className="authors">By {authors.join(', ')}</p> :null
+                                authors.length > 0 ? <p className="authors">By {authors.join(', ')}</p> : null
                             }
                             {price && <p className="price">₹ {price}</p>}
                             {rating ? <Rating rating={rating} /> : null}
-                            <div className="subtitle">
+                            <div className="block-with-text">
                                 {subtitle}
                             </div>
                         </div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import BookCard from './BookCard'
+import ActivityIndicator from './ActivityIndicator'
 import './bookstore.css'
 import './flex-grid.css'
 function parseBooks(bookData) {
@@ -28,35 +29,57 @@ export default class BookStore extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            books: []
+            books: [],
+            loading: false
         }
+        this.fetchData = this.fetchData.bind(this)
+        this.onScroll = this.onScroll.bind(this)
     }
 
-    componentDidMount() {
+    fetchData() {
         const me = this
-        fetch('https://www.googleapis.com/books/v1/volumes?q=harry+potter&maxResults=40')
+        const books = me.state.books
+        const booklen = books.length
+        const url = `https://www.googleapis.com/books/v1/volumes?q=reactjs&startIndex=${booklen + 1}`
+        fetch(url)
             .then(function (resp) { return resp.json() })
             .then(function (data) {
-                let books = parseBooks(data)
-                if (books && books.length) {
+                let parsedBooks = parseBooks(data)
+                if (parsedBooks && parsedBooks.length) {
                     me.setState({
-                        books: books
+                        books: [].concat(books, parsedBooks),
+                        loading: false
                     })
                 }
             })
     }
+    componentDidMount() {
+        const me = this
+        this.setState({
+            loading: true
+        }, function () {
+            me.fetchData()
+            window.addEventListener('scroll', this.onScroll)
+        })
+    }
+    componentWillUnmount(){
+      window.removeEventListener('scroll')
+    }
+    
 
+    onScroll() {
+        const innerHeight = window.innerHeight
+        const scrollTop = document.documentElement.scrollTop
+        const offsetHeight = document.documentElement.offsetHeight
+        if (innerHeight + scrollTop === offsetHeight && this.state.loading === false) {
+            this.fetchData()
+        }
+    }
     render() {
         let books = this.state.books || []
-        //console.log(books)
         return (
-            <div className="container-fluid">
+            <div className="bookstore">
                 <div className="row">
-                    {/* <BookCard
-                    title="Fullstack React"
-                    subtitle="The Complete Guide to ReactJS and Friends The Complete Guide to ReactJS and Friends The Complete Guide to ReactJS and Friends"
-                    thumbnail="http://books.google.com/books/content?id=ppjUtAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
-                    price="2101.57" /> */}
                     {
                         books.map(function (book, index) {
                             return (
@@ -75,6 +98,7 @@ export default class BookStore extends Component {
                         })
                     }
                 </div>
+                <ActivityIndicator />
             </div>
         )
     }
