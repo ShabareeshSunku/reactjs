@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import BookCard from './BookCard'
 import ActivityIndicator from './ActivityIndicator'
+import Header from './Header'
 import './bookstore.css'
 import './flex-grid.css'
+
 function parseBooks(bookData) {
     let books = []
     let items = (bookData && bookData.items && bookData.items) || []
@@ -30,17 +32,21 @@ export default class BookStore extends Component {
         super(props)
         this.state = {
             books: [],
-            loading: false
+            loading: false,
+            query: 'react js'
         }
         this.fetchData = this.fetchData.bind(this)
         this.onScroll = this.onScroll.bind(this)
+        this.onSearch = this.onSearch.bind(this)
     }
 
     fetchData() {
         const me = this
         const books = me.state.books
+        const query = me.state.query
         const booklen = books.length
-        const url = `https://www.googleapis.com/books/v1/volumes?q=reactjs&startIndex=${booklen + 1}`
+        const encodedQuery = query.replace(/^\s+|\s+$|\s+(?=\s)/g, '').split(' ').join('+')
+        const url = `https://www.googleapis.com/books/v1/volumes?q=${encodedQuery}&startIndex=${booklen + 1}`
         fetch(url)
             .then(function (resp) { return resp.json() })
             .then(function (data) {
@@ -62,10 +68,21 @@ export default class BookStore extends Component {
             window.addEventListener('scroll', this.onScroll)
         })
     }
-    componentWillUnmount(){
-      window.removeEventListener('scroll')
+    componentWillUnmount() {
+        window.removeEventListener('scroll')
     }
-    
+
+    onSearch(query = '') {
+        const me = this
+        if (query.length) {
+            me.setState({
+                query: query,
+                books : []
+            }, function () {
+                me.fetchData()
+            })
+        }
+    }
 
     onScroll() {
         const innerHeight = window.innerHeight
@@ -77,9 +94,11 @@ export default class BookStore extends Component {
     }
     render() {
         let books = this.state.books || []
+        let query = this.state.query || ''
         return (
-            <div className="bookstore">
-                <div className="row">
+            <div>
+                <Header query={query} onSearch={this.onSearch} />
+                <div className="row bookstore">
                     {
                         books.map(function (book, index) {
                             return (
