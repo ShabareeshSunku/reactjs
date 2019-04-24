@@ -24,13 +24,13 @@ export default class Search extends Component {
     }
     render() {
         return (
-            <form onSubmit={this._onSubmit}>
-                {/* <input autoComplete="false" name="hidden" type="text" className='hidden-input'></input> */}
+            <form onSubmit={this._onSubmit} autoComplete="off">
                 <input
                     type="text"
                     name="search"
-                    placeholder="Search.."
+                    placeholder="Search books and more..."
                     onChange={this._onChange}
+                    autoComplete="off"
                     value={this.state.query}>
                 </input>
             </form>

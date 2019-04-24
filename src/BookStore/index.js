@@ -2,30 +2,10 @@ import React, { Component } from 'react'
 import BookCard from './BookCard'
 import ActivityIndicator from './ActivityIndicator'
 import Header from './Header'
+import { parseBooks } from './helpers'
 import './bookstore.css'
 import './flex-grid.css'
 
-function parseBooks(bookData) {
-    let books = []
-    let items = (bookData && bookData.items && bookData.items) || []
-    let itemLen = items.length
-    if (itemLen) {
-        for (let i = 0; i < itemLen; i++) {
-            let ithItem = items[i]
-            books.push({
-                title: ithItem.volumeInfo.title,
-                subtitle: ithItem.volumeInfo.subtitle || ithItem.volumeInfo.description || '',
-                thumbnail: ithItem.volumeInfo.imageLinks ? ithItem.volumeInfo.imageLinks.thumbnail : '',
-                price: ithItem.saleInfo && ithItem.saleInfo.retailPrice && ithItem.saleInfo.retailPrice.amount,
-                buyLink: ithItem.saleInfo && ithItem.saleInfo.buyLink,
-                id: ithItem.id,
-                rating: ithItem.volumeInfo.averageRating || 0,
-                authors: ithItem.volumeInfo.authors || []
-            })
-        }
-    }
-    return books
-}
 export default class BookStore extends Component {
 
     constructor(props) {
@@ -33,7 +13,12 @@ export default class BookStore extends Component {
         this.state = {
             books: [],
             loading: false,
-            query: 'react js'
+            query: 'react js',
+            filters: {
+                authors: [],
+                publishers: [],
+                categories: []
+            }
         }
         this.fetchData = this.fetchData.bind(this)
         this.onScroll = this.onScroll.bind(this)
@@ -44,13 +29,14 @@ export default class BookStore extends Component {
         const me = this
         const books = me.state.books
         const query = me.state.query
+        const filters = me.state.filters
         const booklen = books.length
         const encodedQuery = query.replace(/^\s+|\s+$|\s+(?=\s)/g, '').split(' ').join('+')
         const url = `https://www.googleapis.com/books/v1/volumes?q=${encodedQuery}&startIndex=${booklen + 1}`
         fetch(url)
             .then(function (resp) { return resp.json() })
             .then(function (data) {
-                let parsedBooks = parseBooks(data)
+                let parsedBooks = parseBooks(data, filters)
                 if (parsedBooks && parsedBooks.length) {
                     me.setState({
                         books: [].concat(books, parsedBooks),
@@ -77,7 +63,7 @@ export default class BookStore extends Component {
         if (query.length) {
             me.setState({
                 query: query,
-                books : []
+                books: []
             }, function () {
                 me.fetchData()
             })

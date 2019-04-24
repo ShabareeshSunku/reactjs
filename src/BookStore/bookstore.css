@@ -8,6 +8,7 @@
 .card {
   width : auto;
   margin:16px;
+  cursor: pointer;
 }
 .card-inner {
   height : 200px;
@@ -49,7 +50,7 @@
   margin : 8px 0px;
 }
 .thumbnail {
-  height: auto;
+  max-height: 180px;
   max-width: 98%;
 }
 /* styles for '...' */ 
@@ -103,7 +104,10 @@
 .sk-cube-grid .sk-cube {
   width: 33%;
   height: 33%;
-  background-color:steelblue;
+  background-image: 
+  linear-gradient(to right bottom, 
+   rgba(76, 216, 255, 0.8),
+   rgba(30, 108, 217, 0.8));
   float: left;
   -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
           animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; 
@@ -161,41 +165,33 @@
 
 .header {
   height: 50vh;
+  min-height: 300px;
   background-image: 
   linear-gradient(to right bottom, 
    rgba(76, 216, 255, 0.8),
-   rgba(30, 108, 217, 0.8)),
+   rgba(30, 108, 217, 0.6)),
    url('https://images.pexels.com/photos/213399/pexels-photo-213399.jpeg');
   
   background-size: cover;
   background-position: top;
   position: relative;
 
-  clip-path: polygon(0 0, 100% 0, 100% 37.5vh, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 40vh, 0 100%);
   font-family: Lato, sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.7;
   color: #eee;
 }
-
-.brand-box {
-  position: absolute;
-  top: 40px;
-  left: 40px;
-}
 .searchbox-container {
-  position:absolute;
-  top: 40px;
-  right: 40px;
+  text-align: center;
+  padding-top:20px;
 }
 .brand { font-size: 20px; }
 
 .text-box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width:100%;
+  padding-top: 20px;
   text-align: center;
 }
 
@@ -218,57 +214,37 @@
   display: block;
   font-size: 16px;
   font-weight: 500;
-  letter-spacing: 7.4px;
+  letter-spacing: 7px;
 }
 
-.btn:link,
-.btn:visited {
-  text-transform: uppercase;
-  text-decoration: none;
-  padding: 10px 20px;
-  display: inline-block;
-  border-radius: 100px;
-  transition: all .2s;
-  position: relative;
-}
-
-.btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.btn:active {
-  transform: translateY(-1px);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-}
-
-.btn-white {
-  background-color: #fff;
-  color: #777;
-font-size: 14px;
-}
 
 /* Search box styles */
 input[type=text] {
-  width: 130px;
+  width: 300px;
   box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  background-color: white;
-  background-image: url('https://www.w3schools.com/howto/searchicon.png');
-  background-position: 10px 10px; 
-  background-repeat: no-repeat;
-  padding: 12px 20px 12px 40px;
+  border-width: 0px 0px 2px 0px;
+  border-color: #FAFAFA;
+  background-color: transparent;
+  text-align: center;
+  color : #FFF;
+  padding: 12px 20px;
   -webkit-transition: width 0.4s ease-in-out;
   transition: width 0.4s ease-in-out;
+  font-size: 30px;
+  letter-spacing: 3px;
+  font-family: Lato;
+  text-transform: capitalize;
 }
-
+input[type=text]::placeholder{
+  color : rgba(255,255,255,0.5);
+  font-weight: lighter !important;
+  font-size: 15px;
+}
 /* When the input field gets focus, change its width to 100% */
 input[type=text]:focus {
-  width: 100%;
+  width: 80%;
+  outline: none;
 }
-
 .hidden-input {
   display:none;
 }
