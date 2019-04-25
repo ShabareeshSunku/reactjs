@@ -31,21 +31,27 @@ function parseBooks(bookData, filters = { authors: [], publishers: [], categorie
             })
         }
     }
-    console.log(parsedFilters)
-    return books
+    return {
+        books,
+        filters: parsedFilters
+
+    }
 }
 
 function parseFilters(filters, authors = [], categories = [], publisher = '') {
     authors.forEach(function (author) {
+        author = author.toLowerCase()
         if (author && filters.authors.indexOf(author) === -1) {
             filters.authors.push(author)
         }
     })
     categories.forEach(function (category) {
+        category = category.toLowerCase()
         if (category && filters.categories.indexOf(category) === -1) {
             filters.categories.push(category)
         }
     })
+    publisher = publisher.toLowerCase()
     if (publisher && filters.publishers.indexOf(publisher) === -1) {
         filters.publishers.push(publisher)
     }

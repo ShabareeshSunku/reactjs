@@ -2,10 +2,22 @@ import React, { Component } from 'react'
 import BookCard from './BookCard'
 import ActivityIndicator from './ActivityIndicator'
 import Header from './Header'
+import Filter from './Filter'
 import { parseBooks } from './helpers'
 import './bookstore.css'
 import './flex-grid.css'
-
+function getInitialFilters() {
+    return {
+        authors: [],
+        publishers: [],
+        categories: []
+    }
+}
+const intialSelctions = {
+    selectedauthor: '',
+    selectedcategory: '',
+    selectedpublisher: ''
+}
 export default class BookStore extends Component {
 
     constructor(props) {
@@ -14,15 +26,13 @@ export default class BookStore extends Component {
             books: [],
             loading: false,
             query: 'react js',
-            filters: {
-                authors: [],
-                publishers: [],
-                categories: []
-            }
+            filters: getInitialFilters(),
+            ...intialSelctions
         }
         this.fetchData = this.fetchData.bind(this)
         this.onScroll = this.onScroll.bind(this)
         this.onSearch = this.onSearch.bind(this)
+        this.onFilterUpdate = this.onFilterUpdate.bind(this)
     }
 
     fetchData() {
@@ -36,11 +46,12 @@ export default class BookStore extends Component {
         fetch(url)
             .then(function (resp) { return resp.json() })
             .then(function (data) {
-                let parsedBooks = parseBooks(data, filters)
-                if (parsedBooks && parsedBooks.length) {
+                let parsedData = parseBooks(data, filters)
+                if (parsedData && parsedData.books.length) {
                     me.setState({
-                        books: [].concat(books, parsedBooks),
-                        loading: false
+                        books: [].concat(books, parsedData.books),
+                        loading: false,
+                        filters: parsedData.filters
                     })
                 }
             })
@@ -63,7 +74,9 @@ export default class BookStore extends Component {
         if (query.length) {
             me.setState({
                 query: query,
-                books: []
+                books: [],
+                filters: getInitialFilters(),
+                ...intialSelctions
             }, function () {
                 me.fetchData()
             })
@@ -78,12 +91,30 @@ export default class BookStore extends Component {
             this.fetchData()
         }
     }
+    onFilterUpdate(fiterValue, filterType) {
+        this.setState({
+            ['selected' + filterType]: fiterValue
+        })
+    }
     render() {
         let books = this.state.books || []
         let query = this.state.query || ''
+        let { filters = {}, selectedauthor = '', selectedpublisher = '' } = this.state || {}
         return (
             <div>
                 <Header query={query} onSearch={this.onSearch} />
+                <Filter
+                    items={filters.authors}
+                    type='author'
+                    selected={selectedauthor}
+                    onFilterUpdate={this.onFilterUpdate}
+                />
+                <Filter
+                    items={filters.publishers}
+                    type='publisher'
+                    selected={selectedpublisher}
+                    onFilterUpdate={this.onFilterUpdate}
+                />
                 <div className="row bookstore">
                     {
                         books.map(function (book, index) {

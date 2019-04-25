@@ -168,8 +168,8 @@
   min-height: 300px;
   background-image: 
   linear-gradient(to right bottom, 
-   rgba(76, 216, 255, 0.8),
-   rgba(30, 108, 217, 0.6)),
+   rgba(165, 10, 93, 0.8),
+   rgba(214, 25, 82, 0.6)),
    url('https://images.pexels.com/photos/213399/pexels-photo-213399.jpeg');
   
   background-size: cover;
@@ -183,12 +183,6 @@
   line-height: 1.7;
   color: #eee;
 }
-.searchbox-container {
-  text-align: center;
-  padding-top:20px;
-}
-.brand { font-size: 20px; }
-
 .text-box {
   width:100%;
   padding-top: 20px;
@@ -219,7 +213,7 @@
 
 
 /* Search box styles */
-input[type=text] {
+/* input[type=text] {
   width: 300px;
   box-sizing: border-box;
   border-width: 0px 0px 2px 0px;
@@ -240,11 +234,89 @@ input[type=text]::placeholder{
   font-weight: lighter !important;
   font-size: 15px;
 }
-/* When the input field gets focus, change its width to 100% */
 input[type=text]:focus {
   width: 80%;
   outline: none;
+} */
+.searchbox-container {
+  text-align: center;
+  margin-top:20px;
+  width:60%;
+  margin:auto;
+  background-color: rgba(0, 0, 0, 0.2);
+  color : rgba(225,225,225,0.8);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius: 5px;
+  overflow: hidden;
 }
-.hidden-input {
-  display:none;
+@media only screen and (max-width:780px){
+  .searchbox-container {
+    width:90%
+  }
+}
+@media only screen and (min-width:780px){
+  .searchbox-container {
+    width:60%
+  }
+}
+@media only screen and (min-width:1280px){
+  .searchbox-container {
+    width:50%
+  }
+}
+.searchbox{
+  width:100%;
+  border-width: 0px;
+  background-color: transparent;
+  padding:16px 8px;
+  text-transform: capitalize;
+  font-size: 20px;
+  color : rgba(225,225,225,0.8);
+}
+.searchbox:focus {
+  outline: none;
+}
+.searchbox::placeholder{
+  color : rgba(255,255,255,0.4);
+  font-weight: lighter !important;
+  letter-spacing: 3px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.searchIcon{
+  transform: translateY(50%);
+  font-size: 25px;
+}
+.searchIcon-container {
+  background-color: rgba(0, 0, 0, 0.4);
+  width:100%;
+  height:100%;
+  text-align: center
+}
+.filter {
+  width : 300px;
+}
+.filter-item {
+  padding: 12px;
+  background-color:#FAFAFA;
+  border-bottom: 1px solid #DDD;
+  min-height: 40px;
+  cursor: pointer;
+}
+.filter-item-icon {
+  width:30px;
+  height : 100%;
+  text-align: center;
+  display: inline-block;
+  font-size: 20px;
+}
+.filter-item-text {
+  text-transform: capitalize;
+}
+.filter-active {
+  max-height: 300px;
+  overflow:scroll
+}
+.filter-inactive {
+  max-height: 50px;
+  overflow:hidden
 }

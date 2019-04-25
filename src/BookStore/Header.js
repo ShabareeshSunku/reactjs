@@ -7,7 +7,7 @@ function Header(props) {
             <div className="text-box">
                 <h1 className="heading-primary">
                     <span className="heading-primary-main">The Book Store</span>
-                    <span className="heading-primary-sub">The ultimate destination for a Bookworm</span>
+                    <span className="heading-primary-sub">Ultimate destination for a Bookworm</span>
                 </h1>
             </div>
             <div style={{ position: 'relative' }}>
