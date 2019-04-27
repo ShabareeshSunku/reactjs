@@ -13,10 +13,10 @@ export default class BookCard extends PureComponent {
         const { title = '', subtitle = '', thumbnail = '', price = '', rating = 0, authors = [] } = this.props
 
         return (
-            <div className="col-xs-12 col-sm-8 col-md-6 col-lg-4">
+            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4">
                 <div className="card">
                     <div className="card-inner row">
-                        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div className="col-xs-4 col-sm-3 col-md-4 col-lg-4">
                             <div className="card-image-container">
                                 {
                                     thumbnail ? (
@@ -27,7 +27,7 @@ export default class BookCard extends PureComponent {
                                 }
                             </div>
                         </div>
-                        <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8 card-text-container">
+                        <div className="col-xs-8 col-sm-9 col-md-8 col-lg-8 card-text-container">
                             <h4 className="title">{title}</h4>
                             {
                                 authors.length > 0 ? <p className="authors">By {authors.join(', ')}</p> : null

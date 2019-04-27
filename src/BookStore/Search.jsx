@@ -30,7 +30,7 @@ export default class Search extends Component {
                         <span className='fa fa-search searchIcon'></span>
                     </div>
                 </div>
-                <div className='col-xs-0 col-md-11 col-lg-11'>
+                <div className='col-xs-10 col-md-11 col-lg-11'>
                     <input
                         className="searchbox"
                         type="text"

@@ -33,7 +33,11 @@ function parseBooks(bookData, filters = { authors: [], publishers: [], categorie
     }
     return {
         books,
-        filters: parsedFilters
+        filters: {
+            authors: parsedFilters.authors.sort(),
+            publishers: parsedFilters.publishers.sort(),
+            categories: parsedFilters.categories.sort()
+        }
 
     }
 }

@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import BookCard from './BookCard'
 import ActivityIndicator from './ActivityIndicator'
 import Header from './Header'
-import Filter from './Filter'
 import { parseBooks } from './helpers'
+import RefineSearch from './RefineSearch'
 import './bookstore.css'
 import './flex-grid.css'
 function getInitialFilters() {
@@ -33,16 +33,33 @@ export default class BookStore extends Component {
         this.onScroll = this.onScroll.bind(this)
         this.onSearch = this.onSearch.bind(this)
         this.onFilterUpdate = this.onFilterUpdate.bind(this)
+        this.clearFilters = this.clearFilters.bind(this)
     }
 
     fetchData() {
         const me = this
-        const books = me.state.books
-        const query = me.state.query
-        const filters = me.state.filters
+        const {
+            books = [],
+            filters = {},
+            query = '',
+            selectedauthor,
+            selectedcategory,
+            selectedpublisher
+        } = me.state
         const booklen = books.length
-        const encodedQuery = query.replace(/^\s+|\s+$|\s+(?=\s)/g, '').split(' ').join('+')
+        let encodedQuery = query.replace(/^\s+|\s+$|\s+(?=\s)/g, '').split(' ').join('+')
+        if (selectedauthor) {
+            encodedQuery = `${encodedQuery}+inauthor:${selectedauthor}`
+        }
+        if (selectedcategory) {
+            encodedQuery = `${encodedQuery}+subject:${selectedcategory}`
+        }
+        if (selectedpublisher) {
+            encodedQuery = `${encodedQuery}+inpublisher:${selectedpublisher}`
+        }
+        console.log('==>', encodedQuery)
         const url = `https://www.googleapis.com/books/v1/volumes?q=${encodedQuery}&startIndex=${booklen + 1}`
+
         fetch(url)
             .then(function (resp) { return resp.json() })
             .then(function (data) {
@@ -93,48 +110,64 @@ export default class BookStore extends Component {
     }
     onFilterUpdate(fiterValue, filterType) {
         this.setState({
-            ['selected' + filterType]: fiterValue
+            ['selected' + filterType]: fiterValue,
+            books: []
+        }, function () {
+            this.fetchData()
+        })
+    }
+    clearFilters() {
+        this.setState({
+            ...intialSelctions,
+            books: []
+        }, function () {
+            this.fetchData()
         })
     }
     render() {
-        let books = this.state.books || []
-        let query = this.state.query || ''
-        let { filters = {}, selectedauthor = '', selectedpublisher = '' } = this.state || {}
+        let {
+            books = [],
+            query = '',
+            filters = {},
+            selectedauthor = '',
+            selectedpublisher = '',
+            selectedcategory = '',
+            activeFilter = 'author'
+        } = this.state || {}
         return (
             <div>
                 <Header query={query} onSearch={this.onSearch} />
-                <Filter
-                    items={filters.authors}
-                    type='author'
-                    selected={selectedauthor}
+                <RefineSearch
+                    query={query}
+                    selectedauthor={selectedauthor}
+                    selectedcategory={selectedcategory}
+                    selectedpublisher={selectedpublisher}
+                    filters={filters}
                     onFilterUpdate={this.onFilterUpdate}
+                    clearFilters={this.clearFilters}
                 />
-                <Filter
-                    items={filters.publishers}
-                    type='publisher'
-                    selected={selectedpublisher}
-                    onFilterUpdate={this.onFilterUpdate}
-                />
-                <div className="row bookstore">
-                    {
-                        books.map(function (book, index) {
-                            return (
-                                <BookCard
-                                    key={book.id + '-' + index}
-                                    title={book.title}
-                                    subtitle={book.subtitle}
-                                    thumbnail={book.thumbnail}
-                                    price={book.price}
-                                    rating={book.rating}
-                                    buyLink={book.buyLink}
-                                    authors={book.authors} />
-                                //ES6 Syntax
-                                // <BookCard {...book} />
-                            )
-                        })
-                    }
+                <div className="bookstore">
+                    <div className="row ">
+                        {
+                            books.map(function (book, index) {
+                                return (
+                                    <BookCard
+                                        key={book.id + '-' + index}
+                                        title={book.title}
+                                        subtitle={book.subtitle}
+                                        thumbnail={book.thumbnail}
+                                        price={book.price}
+                                        rating={book.rating}
+                                        buyLink={book.buyLink}
+                                        authors={book.authors} />
+                                    //ES6 Syntax
+                                    // <BookCard {...book} />
+                                )
+                            })
+                        }
+                    </div>
+                    <ActivityIndicator />
                 </div>
-                <ActivityIndicator />
             </div>
         )
     }

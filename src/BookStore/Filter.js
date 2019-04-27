@@ -10,9 +10,7 @@ function FilterItem(props) {
     return (
         <div className='filter-item' onClick={() => props.onFilterUpdate(name, type)}>
             <span className='filter-item-icon'>
-                {
-                    selected === name ? <span className='fa fa-check'></span> : null
-                }
+                <span className={selected === name ? 'fa fa-check-square' : 'fa fa-square-o'}></span>
             </span>
             <span className='filter-item-text'>{name}</span>
         </div>
@@ -20,31 +18,26 @@ function FilterItem(props) {
 }
 
 export default class Filter extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            active: false
-        }
-    }
-
+   
     render() {
         const {
             items = '',
             type = '',
             selected = '',
+            activeFilter = '',
             ...rest
         } = this.props
-        const isActive = this.state.active
+        const isActive = activeFilter === type
         return (
-            <div className={`filter ${isActive ? 'filter-active' : 'filter-inactive'}`}>
-                <div className='filter-item' onClick={() => this.setState({ active: !isActive })}>
-                    <span className='filter-item-icon'>
-                        <span className={isActive ? 'fa fa-sort-asc' : 'fa fa-sort-desc'}></span>
+            <div className={`filter ${isActive ? 'filter-active' : ''}`}>
+                <div className={`filter-item ${isActive ? 'filter-header-active' : ''}`} onClick={() => this.props.updateActiveFilter(type)}>
+                    <span className='filter-item-text'><b>{type}</b></span>
+                    <span className='filter-item-icon' style={{ float: 'right' }}>
+                        <span className={isActive ? 'fa fa-angle-down' : 'fa fa-angle-down'}></span>
                     </span>
-                    <span className='filter-item-text'>{selected ? selected : '--choose ' + type + ' --'}</span>
                 </div>
                 {
-                    items.map(function (item, index) {
+                    isActive && items.map(function (item, index) {
                         return (
                             <FilterItem key={'' + index} name={item} type={type} selected={selected} {...rest} />
                         )
