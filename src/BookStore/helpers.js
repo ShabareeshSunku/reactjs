@@ -61,6 +61,16 @@ function parseFilters(filters, authors = [], categories = [], publisher = '') {
     }
 }
 
+function parseSearch(queryString) {
+    var match, re, ret;
+    re = /\??(.*?)=([^\&]*)&?/gi;
+    ret = {};
+    while (match = re.exec(queryString)) {
+        ret[match[1]] = match[2];
+    }
+    return ret;
+}
 export {
-    parseBooks
+    parseBooks,
+    parseSearch
 }

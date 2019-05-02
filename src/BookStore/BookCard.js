@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import Rating from './Rating'
+import { Link } from 'react-router-dom'
 export default class BookCard extends PureComponent {
 
     render() {
@@ -10,36 +11,38 @@ export default class BookCard extends PureComponent {
         // const price = this.props.price
 
         //ES6 Syntax
-        const { title = '', subtitle = '', thumbnail = '', price = '', rating = 0, authors = [] } = this.props
+        const { title = '', id = '', subtitle = '', thumbnail = '', price = '', rating = 0, authors = [] } = this.props
 
         return (
             <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-                <div className="card">
-                    <div className="card-inner row">
-                        <div className="col-xs-4 col-sm-3 col-md-4 col-lg-4">
-                            <div className="card-image-container">
-                                {
-                                    thumbnail ? (
-                                        <img src={thumbnail} alt={title} className="thumbnail" />
-                                    ) : <div className="placeholder">
-                                            <span className="fa fa-book default-icon" />
-                                        </div>
-                                }
+                <Link to={`/book/${id}`}>
+                    <div className="card">
+                        <div className="card-inner row">
+                            <div className="col-xs-4 col-sm-3 col-md-4 col-lg-4">
+                                <div className="card-image-container">
+                                    {
+                                        thumbnail ? (
+                                            <img src={thumbnail} alt={title} className="thumbnail" />
+                                        ) : <div className="placeholder">
+                                                <span className="fa fa-book default-icon" />
+                                            </div>
+                                    }
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-xs-8 col-sm-9 col-md-8 col-lg-8 card-text-container">
-                            <h4 className="title">{title}</h4>
-                            {
-                                authors.length > 0 ? <p className="authors">By {authors.join(', ')}</p> : null
-                            }
-                            {price && <p className="price">₹ {price}</p>}
-                            {rating ? <Rating rating={rating} /> : null}
-                            <div className="block-with-text">
-                                {subtitle}
+                            <div className="col-xs-8 col-sm-9 col-md-8 col-lg-8 card-text-container">
+                                <h4 className="title">{title}</h4>
+                                {
+                                    authors.length > 0 ? <p className="authors">By {authors.join(', ')}</p> : null
+                                }
+                                {price && <p className="price">₹ {price}</p>}
+                                {rating ? <Rating rating={rating} /> : null}
+                                <div className="block-with-text">
+                                    {subtitle}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </Link>
             </div>
         )
     }

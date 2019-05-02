@@ -1,18 +1,19 @@
 import React from 'react'
-import Search from './Search'
+import SearchBox from './SearchBox'
 
 function Header(props) {
     return (
         <header className="header">
-            <div className="text-box">
-                <h1 className="heading-primary">
-                    <span className="heading-primary-main">The Book Store</span>
-                    <span className="heading-primary-sub">Ultimate destination for a Bookworm</span>
-                </h1>
-            </div>
-            <div style={{ position: 'relative' }}>
-                <div className='searchbox-container'>
-                    <Search {...props} />
+            <div className="row header-inner">
+                <div className="col-xs-12 col-sm-6 col-md-5 col-lg-5">
+                    <div className="text-box">
+                        <h1 className="heading-primary">
+                            <span className="heading-primary-main">The Book Store</span>
+                        </h1>
+                    </div>
+                </div>
+                <div className="col-xs-12 col-sm-6 col-md-7 col-lg-7">
+                    <SearchBox {...props} />
                 </div>
             </div>
         </header>
