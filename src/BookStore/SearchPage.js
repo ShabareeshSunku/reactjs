@@ -31,7 +31,6 @@ export default class BookStore extends Component {
         }
         this.fetchData = this.fetchData.bind(this)
         this.onScroll = this.onScroll.bind(this)
-        this.onSearch = this.onSearch.bind(this)
         this.onFilterUpdate = this.onFilterUpdate.bind(this)
         this.clearFilters = this.clearFilters.bind(this)
     }
@@ -73,6 +72,7 @@ export default class BookStore extends Component {
             })
     }
     componentWillReceiveProps(nextProps) {
+        console.log('===>CWR')
         const me = this
         const { location = {} } = me.props
         const { location: nextLocation = {} } = nextProps
@@ -83,14 +83,17 @@ export default class BookStore extends Component {
             }
             if (params.q) {
                 stateObj.query = params.q.split('+').join(' ')
+                stateObj.books = []
+                stateObj.filters = getInitialFilters()
             }
-            me.setState(stateObj, function () {
+            me.setState({ ...stateObj, ...intialSelctions }, function () {
                 me.fetchData()
             })
         }
     }
 
     componentDidMount() {
+        console.log('===>CDM')
         const me = this
         const { location = {} } = me.props
         const params = parseSearch(location.search)
@@ -107,20 +110,6 @@ export default class BookStore extends Component {
     }
     componentWillUnmount() {
         window.removeEventListener('scroll', this.onScroll)
-    }
-
-    onSearch(query = '') {
-        const me = this
-        if (query.length) {
-            me.setState({
-                query: query,
-                books: [],
-                filters: getInitialFilters(),
-                ...intialSelctions
-            }, function () {
-                me.fetchData()
-            })
-        }
     }
 
     onScroll() {
@@ -158,7 +147,7 @@ export default class BookStore extends Component {
         } = this.state || {}
         return (
             <div>
-                <Header query={query} onSearch={this.onSearch} />
+                <Header query={query}/>
                 <div className="bookstore">
                     <RefineSearch
                         query={query}

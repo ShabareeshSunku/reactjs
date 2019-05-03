@@ -10,6 +10,14 @@ class Search extends Component {
         this._onSubmit = this._onSubmit.bind(this)
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.query !== nextProps.query) {
+            this.setState({
+                query: nextProps.query
+            })
+        }
+    }
+    
     _onSubmit(ev) {
         const query = this.state.query || ''
         const encodedQuery = query.replace(/^\s+|\s+$|\s+(?=\s)/g, '').split(' ').join('+')
@@ -35,7 +43,7 @@ class Search extends Component {
                     placeholder="Search books and more..."
                     onChange={this._onChange}
                     autoComplete="off"
-                    value={this.state.query}>
+                    value={this.state.query || ''}>
                 </input>
             </form>
         )
