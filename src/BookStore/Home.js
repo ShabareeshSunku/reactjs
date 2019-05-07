@@ -1,10 +1,9 @@
 import React from 'react'
-import Header from './Header'
+import PageWrapper from './PageWrapper'
 export default function Home() {
     return (
-        <div>
-            <Header />
-            <h2>I am Home page</h2>
-        </div>
+        <PageWrapper>
+            <h2>I am in Home Page</h2>
+        </PageWrapper>
     )
 }

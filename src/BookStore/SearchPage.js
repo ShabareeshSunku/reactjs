@@ -4,6 +4,7 @@ import ActivityIndicator from './ActivityIndicator'
 import Header from './Header'
 import { parseBooks, parseSearch } from './helpers'
 import RefineSearch from './RefineSearch'
+import PageWrapper from './PageWrapper'
 import './bookstore.css'
 import './flex-grid.css'
 function getInitialFilters() {
@@ -93,7 +94,6 @@ export default class BookStore extends Component {
     }
 
     componentDidMount() {
-        console.log('===>CDM')
         const me = this
         const { location = {} } = me.props
         const params = parseSearch(location.search)
@@ -146,41 +146,38 @@ export default class BookStore extends Component {
             selectedcategory = ''
         } = this.state || {}
         return (
-            <div>
-                <Header query={query}/>
-                <div className="bookstore">
-                    <RefineSearch
-                        query={query}
-                        selectedauthor={selectedauthor}
-                        selectedcategory={selectedcategory}
-                        selectedpublisher={selectedpublisher}
-                        filters={filters}
-                        onFilterUpdate={this.onFilterUpdate}
-                        clearFilters={this.clearFilters}
-                    />
-                    <div className="row ">
-                        {
-                            books.map(function (book, index) {
-                                return (
-                                    <BookCard
-                                        key={book.id + '-' + index}
-                                        title={book.title}
-                                        subtitle={book.subtitle}
-                                        thumbnail={book.thumbnail}
-                                        price={book.price}
-                                        rating={book.rating}
-                                        buyLink={book.buyLink}
-                                        authors={book.authors}
-                                        id={book.id} />
-                                    //ES6 Syntax
-                                    // <BookCard {...book} />
-                                )
-                            })
-                        }
-                    </div>
-                    <ActivityIndicator />
+            <PageWrapper query={query}>
+                <RefineSearch
+                    query={query}
+                    selectedauthor={selectedauthor}
+                    selectedcategory={selectedcategory}
+                    selectedpublisher={selectedpublisher}
+                    filters={filters}
+                    onFilterUpdate={this.onFilterUpdate}
+                    clearFilters={this.clearFilters}
+                />
+                <div className="row ">
+                    {
+                        books.map(function (book, index) {
+                            return (
+                                <BookCard
+                                    key={book.id + '-' + index}
+                                    title={book.title}
+                                    subtitle={book.subtitle}
+                                    thumbnail={book.thumbnail}
+                                    price={book.price}
+                                    rating={book.rating}
+                                    buyLink={book.buyLink}
+                                    authors={book.authors}
+                                    id={book.id} />
+                                //ES6 Syntax
+                                // <BookCard {...book} />
+                            )
+                        })
+                    }
                 </div>
-            </div>
+                <ActivityIndicator />
+            </PageWrapper>
         )
     }
 }

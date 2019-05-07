@@ -1,3 +1,26 @@
+function parseBook(ithItem) {
+    let thumbnail = ''
+    const {
+        volumeInfo = {},
+        saleInfo = {},
+        id = ''
+    } = ithItem
+    const authors = volumeInfo.authors || []
+    if (ithItem.volumeInfo.imageLinks) {
+        thumbnail = `https://books.google.com/books/content/images/frontcover/${id}?fife=w400-h600`
+    }
+    return {
+        title: volumeInfo.title,
+        subtitle: volumeInfo.subtitle || volumeInfo.description || '',
+        thumbnail: thumbnail,
+        price: saleInfo && saleInfo.retailPrice && saleInfo.retailPrice.amount,
+        buyLink: saleInfo && saleInfo.buyLink,
+        id: id,
+        rating: volumeInfo.averageRating || 0,
+        authors: authors || []
+    }
+}
+
 function parseBooks(bookData, filters = { authors: [], publishers: [], categories: [] }) {
     let books = []
     let items = (bookData && bookData.items && bookData.items) || []
@@ -6,29 +29,18 @@ function parseBooks(bookData, filters = { authors: [], publishers: [], categorie
     if (itemLen) {
         for (let i = 0; i < itemLen; i++) {
             let ithItem = items[i]
-            let thumbnail = ''
             const {
-                volumeInfo = {},
-                saleInfo = {},
-                id = ''
+                volumeInfo = {}
             } = ithItem
             const authors = volumeInfo.authors || []
             const categories = volumeInfo.categories || []
             const publisher = volumeInfo.publisher || ''
-            if (ithItem.volumeInfo.imageLinks) {
-                thumbnail = `https://books.google.com/books/content/images/frontcover/${id}?fife=w400-h600`
+            const parsedItem = parseBook(ithItem)
+            if (Object.keys(parsedItem).length > 0) {
+                books.push(parsedItem)
             }
             parseFilters(parsedFilters, authors, categories, publisher)
-            books.push({
-                title: volumeInfo.title,
-                subtitle: volumeInfo.subtitle || volumeInfo.description || '',
-                thumbnail: thumbnail,
-                price: saleInfo && saleInfo.retailPrice && saleInfo.retailPrice.amount,
-                buyLink: saleInfo && saleInfo.buyLink,
-                id: id,
-                rating: volumeInfo.averageRating || 0,
-                authors: volumeInfo.authors || []
-            })
+
         }
     }
     return {
@@ -72,5 +84,6 @@ function parseSearch(queryString) {
 }
 export {
     parseBooks,
-    parseSearch
+    parseSearch,
+    parseBook
 }
