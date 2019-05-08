@@ -30,7 +30,7 @@ export default class BookCard extends PureComponent {
                                 </div>
                             </div>
                             <div className="col-xs-8 col-sm-9 col-md-8 col-lg-8 card-text-container">
-                                <h4 className="title">{title}</h4>
+                                <h2 className="title">{title}</h2>
                                 {
                                     authors.length > 0 ? <p className="authors">By {authors.join(', ')}</p> : null
                                 }

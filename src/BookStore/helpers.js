@@ -3,21 +3,32 @@ function parseBook(ithItem) {
     const {
         volumeInfo = {},
         saleInfo = {},
+        accessInfo = {},
         id = ''
     } = ithItem
     const authors = volumeInfo.authors || []
+    const types = []
+    if (accessInfo && accessInfo.epub && accessInfo.epub.isAvailable) {
+        types.push('epub')
+    }
+    if (accessInfo && accessInfo.pdf && accessInfo.pdf.isAvailable) {
+        types.push('pdf')
+    }
     if (ithItem.volumeInfo.imageLinks) {
         thumbnail = `https://books.google.com/books/content/images/frontcover/${id}?fife=w400-h600`
     }
     return {
         title: volumeInfo.title,
         subtitle: volumeInfo.subtitle || volumeInfo.description || '',
+        description : volumeInfo.description || '',
         thumbnail: thumbnail,
         price: saleInfo && saleInfo.retailPrice && saleInfo.retailPrice.amount,
         buyLink: saleInfo && saleInfo.buyLink,
         id: id,
         rating: volumeInfo.averageRating || 0,
-        authors: authors || []
+        authors: authors || [],
+        types,
+        embeddable: accessInfo.embeddable
     }
 }
 
