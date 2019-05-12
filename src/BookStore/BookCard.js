@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import Rating from './Rating'
 import { Link } from 'react-router-dom'
+import FavoriteButton from './FavoriteButton'
 export default class BookCard extends PureComponent {
 
     render() {
@@ -15,10 +16,11 @@ export default class BookCard extends PureComponent {
 
         return (
             <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-                <Link to={`/book/${id}`}>
-                    <div className="card">
-                        <div className="card-inner row">
-                            <div className="col-xs-4 col-sm-3 col-md-4 col-lg-4">
+
+                <div className="card">
+                    <div className="card-inner row">
+                        <div className="col-xs-4 col-sm-3 col-md-4 col-lg-4">
+                            <Link to={`/bookwithhook/${id}`}>
                                 <div className="card-image-container">
                                     {
                                         thumbnail ? (
@@ -28,8 +30,11 @@ export default class BookCard extends PureComponent {
                                             </div>
                                     }
                                 </div>
-                            </div>
-                            <div className="col-xs-8 col-sm-9 col-md-8 col-lg-8 card-text-container">
+                            </Link>
+                        </div>
+                        <div className="col-xs-8 col-sm-9 col-md-8 col-lg-8 card-text-container">
+                            <FavoriteButton bookId={id} book={{ title, id, subtitle, thumbnail, price, rating, authors }} />
+                            <Link to={`/bookwithhook/${id}`}>
                                 <h2 className="title">{title}</h2>
                                 {
                                     authors.length > 0 ? <p className="authors">By {authors.join(', ')}</p> : null
@@ -39,11 +44,11 @@ export default class BookCard extends PureComponent {
                                 <div className="block-with-text">
                                     {subtitle}
                                 </div>
-                            </div>
+                            </Link>
                         </div>
                     </div>
-                </Link>
-            </div>
+                </div>
+            </div >
         )
     }
 }

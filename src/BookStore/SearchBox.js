@@ -23,7 +23,7 @@ class Search extends Component {
         const encodedQuery = query.replace(/^\s+|\s+$|\s+(?=\s)/g, '').split(' ').join('+')
         const { history = {} } = this.props
         if (encodedQuery.length) {
-            history.push(`search?q=${encodedQuery}`)
+            history.push(`/search?q=${encodedQuery}`)
         }
         ev.preventDefault();
     }

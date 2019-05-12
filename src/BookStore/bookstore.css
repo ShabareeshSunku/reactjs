@@ -366,3 +366,11 @@
   color : #FFF;
   background-color: dodgerblue;
 }
+.favIcon {
+  color : tomato;
+  font-size: 20px;
+  float: right;
+  display: block;
+  z-index: 5;
+  cursor: pointer;
+}
